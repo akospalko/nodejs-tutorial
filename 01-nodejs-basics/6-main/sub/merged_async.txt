@@ -1,0 +1,1 @@
+Async merged result: hello from the first file., hello from the second file.

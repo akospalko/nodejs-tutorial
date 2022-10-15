@@ -1,0 +1,6 @@
+merged data: first file's content second file's content
+appended data: first file's content second file's content 
+appended data: first file's content second file's content 
+appended data: first file's content second file's content 
+appended data: first file's content second file's content 
+appended data: first file's content second file's content 

@@ -1,0 +1,1 @@
+ Merged result: hello from the first file., hello from the second file. This is a merged sentence 
