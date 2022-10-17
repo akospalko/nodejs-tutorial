@@ -13,9 +13,12 @@ const app = express();
   // 1. Single param (dynamic way) 
   app.get('/api/products/:ProductID', (req, res) => { // defining a custom route parameter 
     const { ProductID } = req.params; //get the route parameter 
-
     const filteredProduct = products.filter((product) => product.id === Number(ProductID)) // returns obj if its id === ProductID
-    res.json(filteredProduct); //send back  json
+  
+    if(filteredProduct.length < 1) { // if filtered array is empty (=== product is not filtered)
+      return res.status(404).send('<H1> Product does not exist. </H1>')
+    }
+    return res.json(filteredProduct); //send back  json
   });
 
   // 2. Multiple params (dynamic way)  (hardcoded version)
