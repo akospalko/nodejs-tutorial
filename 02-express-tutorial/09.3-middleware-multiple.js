@@ -1,12 +1,10 @@
 const express = require('express');
 const logger = require('./09.0-middleware-logger');
+const authorize = require('./09-middleware-authorize');
 const app = express();
 
-
-//testing middleware using app.use() -> assigning mw to all the requests
-
-app.use(logger) // bind middleware to the app obj -> matches all requets // NOTE: placing order matters
-//app.use(('/api'), logger) // matches all the routes that start with /api -> e.g. /api/home , /api/products 
+//testing multiple middlewares with app.use()
+app.use([logger, authorize]);
 
 //route 1
 app.get('/', (req, res) => { //pass middleware btw path and callback
@@ -17,7 +15,7 @@ app.get('/about', (req, res) => {
   res.status(200).send('ABOUT')
 })
 //route 3
-app.get('/api/products', (req, res) => { 
+app.get('/api/products', /* [authorize, logger], */ (req, res) => {  //apply multiple mws to the request
   res.status(200).send('PRODUCTS')
 })
 //route 4
