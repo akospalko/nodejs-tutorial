@@ -1,7 +1,7 @@
-import { useState } from 'react'
 import CreateTask from './components/CreateTask';
 import Tasks from './components/Tasks';
 import './App.css'
+import FormDataContext from './contexts/FormDataContext';
 
 function App() {
   return (
@@ -10,10 +10,12 @@ function App() {
         <div className="Header">
           <h1> Task manager </h1>
         </div>
-        <div className="CreateTask">
-          <CreateTask/>
-        </div>
-        <Tasks/>
+        <FormDataContext>
+          <div className="CreateTask">
+            <CreateTask/>
+          </div>
+          <Tasks/>
+        </FormDataContext>
       </div>
     </div>
   )

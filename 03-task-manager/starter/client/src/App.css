@@ -13,6 +13,7 @@
 .BackgroundOverlay {
   display: flex;
   align-items: center;
+  justify-content: flex-start; 
   flex-direction: column;
   overflow: auto;
   width: 800px;
@@ -20,7 +21,7 @@
   background-color: rgba(67, 13, 75);
   border-left: 4px solid #7b337d;
   border-right: 4px solid #7b337d;
-  /* background-color: rgb(71, 15, 118); */
+  scrollbar-gutter: stable both-edges; /* prevents layout shift when scrollbar dis/appearing */
 }
 
 .Header {
@@ -29,6 +30,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .Header h1 {
@@ -38,8 +40,9 @@
 
 .CreateTask {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   flex-direction: column;
   width: 80%;
   height: 250px;
+  flex-shrink: 0
 }
