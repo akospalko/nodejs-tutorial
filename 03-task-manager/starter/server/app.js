@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const tasks = require('./routes/tasks');
+const schema = require('./routes/schema');
 const connectDB = require('./db/connect');
 require('dotenv').config(); // access .env contents
 const notFound = require('./middleware/not-found.js'); 
@@ -11,9 +12,9 @@ const port = process.env.PORT || 3000;
 app.use(express.json());  //built in middleware function in Express . It parses incoming JSON requests and puts the parsed data in req.body.
 app.use(express.static('./public'));
 app.use(errorHandlerMiddleware);
-
 //routes
 app.use('/api/v1/tasks', tasks);
+app.use('/api/v1/schema', schema);
 app.use(notFound); // if route is not found
 
 const startServer = async () => {

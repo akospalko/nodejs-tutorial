@@ -16,7 +16,7 @@
   justify-content: space-between;
   flex-direction: column;
   width: 550px;
-  height: 400px;
+  height: 450px;
   background-color: #7b337d;
 }
 
@@ -117,6 +117,7 @@
 /* position checkbox to the center */
 .Checkbox {
   margin-top: 15px;
+  cursor: pointer;
 }
 
 .Checkbox span {
@@ -126,6 +127,7 @@
 input.InputCheckbox {
   width: 20px;
   height: 20px;
+  cursor: pointer;
 }
 
 .Button {
@@ -148,4 +150,40 @@ input.InputCheckbox {
 
 .Button button:hover {
   border: 1px solid #f5d5e0;
+}
+
+.Button button:disabled {
+  background-color: grey;
+  border: 1px solid grey;
+}
+
+/* duplicate with create task / shared too  */
+.StatusMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  padding: 10px;
+  flex-shrink: 0;
+}
+
+.StatusMessage p {
+  font-size: clamp(1.1rem, 1.2rem, 1.3rem);
+  color: white;
+  margin: 0;
+}
+
+.CharacterCountEdit {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 25px;
+  margin: 10px;
+}
+
+.CharacterCountEdit p {
+  color: #f5d5e0;
+  font-size: clamp(1rem, 1.1rem, 1.2rem);
+  margin: 0;
 }

@@ -21,7 +21,6 @@ export default function Tasks() {
     .catch(error => console.log(error) )
   }, [setData])
 
-
   //fetch data on first run
   useEffect(() => {
     fetchData();

@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
 
+//predefined values:
+const maxlength = 100;
+
 const TaskSchema = new mongoose.Schema({ //constructor of our database documents (the database will accept parameters with the keys specified below)
   name: {
     type: String,
     required: [true, 'must provide name'],
     trim: true,
-    maxlength: [20, 'char length must be less than 20'],
+    maxlength: [maxlength, `character length must be less than ${maxlength}`],
   }, 
   completed: {
     type: Boolean,

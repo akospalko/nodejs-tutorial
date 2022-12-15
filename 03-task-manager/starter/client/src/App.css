@@ -18,7 +18,7 @@
   overflow: auto;
   width: 800px;
   height: 100%;
-  background-color: rgba(67, 13, 75);
+  background-color: #210535;
   border-left: 4px solid #7b337d;
   border-right: 4px solid #7b337d;
   scrollbar-gutter: stable both-edges; /* prevents layout shift when scrollbar dis/appearing */
@@ -43,6 +43,6 @@
   /* align-items: center; */
   flex-direction: column;
   width: 80%;
-  height: 250px;
+  height: 200px;
   flex-shrink: 0
 }
