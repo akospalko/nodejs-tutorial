@@ -1,36 +1,37 @@
 import React, { useEffect, useCallback } from 'react'
-import axios from 'axios';
+import { getAllTasks } from '../helper/axiosRequests';
 import Task from './Task';
 import './Tasks.css';
 import { useFormDataContext } from '../contexts/FormDataContext';
+import updateState from '../helper/updateState';
+
 export default function Tasks() {
   const { 
     isSubmittingForm, 
     data, 
-    setData
+    setData,
+    setStatusMessage
   } = useFormDataContext();
 
   //fetch data memoized fn
-  let fetchData = useCallback(async () => {
-    return await axios.get('/api/v1/tasks')
-    .then(response => {
-      const fetchedData = response.data.tasks;
-      if(response.data < 1) { return } // empty task arr
-      setData(fetchedData);
-    })
-    .catch(error => console.log(error) )
-  }, [setData])
+  let fetchAllData = useCallback(async () => {
+      const response = await getAllTasks();
+      const {data, resStatusMessage } = response;
+      if(response.data.length < 1) return // empty task arr
+        setData(data);
+        updateState(setStatusMessage, 'getAllTasks', resStatusMessage);
+  }, [setData, setStatusMessage])
 
   //fetch data on first run
   useEffect(() => {
-    fetchData();
-  }, [fetchData])
+    fetchAllData();
+  }, [fetchAllData])
 
   //refetch data each time form is submitted
   useEffect(() => {
     if(!isSubmittingForm) return;
-    fetchData();
-  }, [data, fetchData, isSubmittingForm])
+    fetchAllData();
+  }, [fetchAllData, isSubmittingForm])
 
   return (
     <div className='TasksContainer'> 

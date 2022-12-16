@@ -2,15 +2,15 @@ import React, { useEffect } from 'react';
 import './EditTask.css';
 import ReturnButton from '../assets/svg_return_1.svg';
 import { useFormDataContext } from '../contexts/FormDataContext';
+import { TASK_PLACEHOLDER } from '../helper/statusMessages';
 
-export default function EditTask( {task, taskID, toggleModalHandler}) {
+export default function EditTask({ taskID, toggleModalHandler }) {
 const {
   updateTaskEntry,
   inputHandler,
   submitForm,
   setActiveID,
   charCount,
-  setCharCount,
   validationData,
   statusMessage,
   isDisabled } = useFormDataContext();
@@ -18,9 +18,8 @@ const {
   // actions when modal is opened: set active id, update char count
   useEffect(() => {
     setActiveID(taskID);
-    setCharCount(updateTaskEntry.name.length)
-  }, [setActiveID, setCharCount, taskID, updateTaskEntry?.name?.length])
-
+  }, [setActiveID, taskID])
+  
   return (
     <div className='Background'>
       <div className='Modal'>
@@ -49,10 +48,12 @@ const {
                 type="text"
                 value={ updateTaskEntry.name || '' }
                 name={'name'}
-                placeholder={ 'task name comes here' }/>
+                placeholder={ TASK_PLACEHOLDER }
+                maxLength={validationData?.name?.maxlength}
+              />
             </label>
             <div className="CharacterCountEdit">
-              <p> {`(${ charCount } / ${ validationData?.name?.maxlength[0] || 0 })`} </p>
+              <p> {`(${ charCount.update } / ${ validationData?.name?.maxlength[0] || 0 })`} </p>
             </div>
             <label className='InputGroup Checkbox'>
               <span className='Label'> Completed  </span>
@@ -66,12 +67,12 @@ const {
             </label>
           </form>
           <div className="StatusMessage">
-            <p> { statusMessage } </p>
+            <p> { statusMessage.update } </p>
           </div>
         </div>
         <div className='Button'>
           <button
-            disabled={ isDisabled }
+            disabled={ isDisabled.update }
             onClick={(e) => submitForm(e, 'update', toggleModalHandler)}
           > Edit
           </button>

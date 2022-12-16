@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import './CreateTask.css'
 import { useFormDataContext } from '../contexts/FormDataContext';
-
+import { TASK_PLACEHOLDER } from '../helper/statusMessages';
 export default function CreateTask() {
   const operation = 'create';
   const { 
@@ -14,32 +14,28 @@ export default function CreateTask() {
     isDisabled, 
   } = useFormDataContext();
 
-  useEffect(()=>{
-    console.log(isDisabled);
-  }, [isDisabled])
   return (
     <div className="SubmitTask"> 
-      {/* <h2> Add task </h2> */}
       <form>
         <input
           type="text"
           onChange={(e) => inputHandler(e, operation)}
           value={createTaskEntry?.name || ''}
           name="name"
-          placeholder={ "e.g. do the dishes "} 
+          placeholder={ TASK_PLACEHOLDER } 
           maxLength={validationData?.name?.maxlength}
         /> 
         <button 
-          disabled={ isDisabled }
+          disabled={ isDisabled.create }
           onClick={(e) => submitForm(e, operation)}
         > Submit 
         </button>
       </form>  
       <div className="StatusMessage"> 
-        <p> { statusMessage } </p>
+        <p> { statusMessage.create } </p>
       </div>
       <div className="CharacterCount"> 
-        <p> {`(${ charCount } / ${ validationData?.name?.maxlength[0] || 0 })`} </p>
+        <p> {`(${ charCount.create } / ${ validationData?.name?.maxlength[0] || 0 })`} </p>
       </div>
     </div>
   )

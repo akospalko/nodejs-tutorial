@@ -17,10 +17,15 @@
   align-items: center;
   width: 85%;
   height: 100%;
+  word-wrap: break-word;
+  padding: 10px;
 }
 
 .Task p {
   font-size: clamp(1.2rem, 1.4rem, 1.6rem);
+  text-align: justify;
+  width: 100%;
+  height: 100%;
 }
 
 .TaskControl {

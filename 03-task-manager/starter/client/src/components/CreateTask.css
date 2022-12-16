@@ -9,13 +9,6 @@
   padding: 10px;
 }
 
-/* .SubmitTask h2 {
-  color: #f5d5e0;
-  text-transform: capitalize;
-  margin:0;
-  margin-bottom: 15px;
-} */
-
 .SubmitTask form {
   display: flex;
   justify-content: center;

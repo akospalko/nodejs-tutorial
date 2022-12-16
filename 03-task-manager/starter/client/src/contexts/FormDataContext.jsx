@@ -1,102 +1,80 @@
 import React, {createContext, useContext, useState, useEffect } from 'react'
-import axios from 'axios';
+import { EMPTY, CREATE_TASK_DEFAULT, UPDATE_TASK_DEFAULT } from '../helper/statusMessages';
+import updateState from '../helper/updateState';
+import { patchTask, postTask, getDbValidation } from '../helper/axiosRequests';
+//create context instance
 const FormContext = createContext();
-
+//export ready to use context as...
 export const useFormDataContext = () => {
   return useContext(FormContext);
 }
-
 export default function FormDataLayout({ children }) {
   //form template
-  const formData = {name: '', completed: false};
+  const formData = {name: EMPTY, completed: false};
   //states
-  const [data, setData] = useState('');
+  const [data, setData] = useState(EMPTY);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
-  const [activeID, setActiveID] = useState('');
+  const [validationData, setValidationData] = useState({}); // mongo db validation parameters (e.g. min-maxlength)
+  const [statusMessage, setStatusMessage] = useState({
+    create: CREATE_TASK_DEFAULT, 
+    update: UPDATE_TASK_DEFAULT, 
+    delete: EMPTY,
+    getDbValidation: EMPTY,
+    getAllTasks: EMPTY });
+  const [charCount, setCharCount] = useState({create: 0, update: 0});
+  const [isDisabled, setIsDisabled] = useState({create: true, update: true});
+  //create task
   const [createTaskEntry, setCreateTaskEntry] = useState(formData); // container for a single task entry: either to create or update (filtered out) task.
+  //update task
+  const [activeID, setActiveID] = useState(EMPTY);
   const [updateTaskEntry, setUpdateTaskEntry] = useState(formData); // container for a single task entry: either to create or update (filtered out) task.
-  const [statusMessage, setStatusMessage] = useState('add a task...');
-  const [charCount, setCharCount] = useState(0);
-  const [validationData, setValidationData] = useState({});
-  const [isDisabled, setIsDisabled] = useState(true);
-  //requests:
-  const patchRequest = async () => {
-    try {
-      await axios.patch(`/api/v1/tasks/${activeID}`, updateTaskEntry)
-      //.then {}
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
-  const postRequest = async () => { 
-    try {
-      await axios.post('/api/v1/tasks', createTaskEntry)
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  //request db validation data on first run
+  // UE
+  // request database validation data on first run
   useEffect(() => {
-    console.log('fetching schema');
-    const getValidationData = async () => {
-      try {
-        await axios.get('/api/v1/schema') 
-        .then(res => {
-          const { required, maxlength } = res.data.name;
-          const { default: value } = res.data.completed;
-          console.log(required, maxlength , value)
-          console.log(res.data);
-          //set max char count:
-          setValidationData(res.data)
-        })
-        .catch(err => console.log(err))
-      } catch (error) {
-        console.log(error);
-      }
+    return async () => {
+      const res = await getDbValidation();
+      const { data, resStatusMessage } = res;
+      setValidationData(data);
+      updateState(setStatusMessage, 'getDbValidation', resStatusMessage);
     }
-    getValidationData();
   }, [])
 
-  //filter out current active entry using activeID
-  useEffect(() => { 
+  //filter out current active entry using activeID -> edit task populate input field
+  useEffect(() => {
     if(!activeID) return;
-    if(!data) return; 
+    if(!data) return;
     const filteredEntry = data.filter(task => task._id === activeID);
     if(filteredEntry) {
       setUpdateTaskEntry(filteredEntry[0]);
+      updateState(setCharCount, 'update', filteredEntry[0]?.name?.length )
     }
   }, [activeID, data])
 
   //form validation
-  const formValidation = (operation, value, statusMessage) => {
+  const formValidation = (operation, value ) => {
     if(operation === 'create') {
       if(value.length > validationData.name.maxlength[0]) {
-        console.log(validationData.name.maxlength[0]);
-        setStatusMessage(`${validationData.name.maxlength[1]}`);
-        setIsDisabled(true);
+        updateState(setStatusMessage, operation, validationData.name.maxlength[1]);
+        updateState(setIsDisabled, operation, true);
       } else if(value.length < 1) {
-        setStatusMessage('add a new task...'); 
-        setIsDisabled(true);
+        updateState(setStatusMessage, operation, CREATE_TASK_DEFAULT);
+        updateState(setIsDisabled, operation, true);
       } else {
-        setStatusMessage('');
-        setIsDisabled(false);
+        updateState(setStatusMessage, operation, EMPTY);
+        updateState(setIsDisabled, operation, false);
       }
     } else if(operation === 'update') {
-      //separate isDisabled, statusMesage
       if(value.length > validationData.name.maxlength[0]) {
         console.log(validationData.name.maxlength[0]);
-        setStatusMessage(`${validationData.name.maxlength[1]}`);
-        setIsDisabled(true);
+        updateState(setStatusMessage, operation, validationData.name.maxlength[1]);
+        updateState(setIsDisabled, operation, true);
       } else if(value.length < 1) {
-        setStatusMessage('edit task'); 
-        setIsDisabled(true);
+        updateState(setStatusMessage, operation, CREATE_TASK_DEFAULT);
+        updateState(setIsDisabled, operation, true);
       } else {
-        setStatusMessage('');
-        setIsDisabled(false);
+        updateState(setStatusMessage, operation, EMPTY);
+        updateState(setIsDisabled, operation, false);
       }
     }
   }
@@ -105,50 +83,52 @@ export default function FormDataLayout({ children }) {
   const submitForm = async (e, operation, toggleModal) => {
     e.preventDefault();
     setIsSubmittingForm(true);
-    setIsDisabled(true);// disable button on submit  
-    //execute axios request
+    updateState(setIsDisabled, operation, true); // disable button on submit
+    //axios requests
     if(operation === 'create') {
-      await postRequest();
-      setStatusMessage('task is created');
+      const resStatusMessage = await postTask(activeID, createTaskEntry);
+      updateState(setStatusMessage, operation, resStatusMessage);
       setCreateTaskEntry(formData);
-      setCharCount(0);
+      updateState(setCharCount, operation, 0);
+      setTimeout(() => updateState(setStatusMessage, operation, CREATE_TASK_DEFAULT), 1000);
       setIsSubmittingForm(false);
-      setTimeout(() => setStatusMessage('create new task'), 1000);
     } else if(operation === 'update') {
-      await patchRequest();
-      setStatusMessage('task is updated');
+      const resStatusMessage = await patchTask(activeID, updateTaskEntry)
+      updateState(setStatusMessage, operation, resStatusMessage);
       setUpdateTaskEntry(formData);
-      setCharCount(0);
+      updateState(setCharCount, operation, 0);
+      setTimeout(() =>  {
+        updateState(setStatusMessage, operation, UPDATE_TASK_DEFAULT); // default status message
+        if(toggleModal) {
+          toggleModal(); // close modal after form is submitted
+        }
+      } , 500);
       setIsSubmittingForm(false);
-    }
-    //post request to the appropriate api endpoint (requires task's id)
-  
-    if(toggleModal) {
-      toggleModal(); // close modal after form is submitted
     }
   }
 
-  // input handler for create - update
+  // input handler for create - update task
   const inputHandler = (e, operation) => {
     const { name, value, checked } = e.target;
     let tempData = null;
     //CREATE Task
     if(operation === 'create') {
-      formValidation('create', value);
+      formValidation(operation, value);
       const inputData = { ...createTaskEntry };
       if(name === 'name') {
-        setCharCount(value.length)
+        updateState(setCharCount, operation, value.length);
         tempData = { ...inputData, [name]: value };
-      }  
+      }
       if(!tempData.hasOwnProperty('completed')) { // assign 'completed' entry to the obj when handler is first run
         tempData = { ...inputData, completed: false };
       }
       setCreateTaskEntry(tempData);
     } //UPDATE Task
     else if( operation === 'update') {
-      formValidation('update', value);
+      formValidation(operation, value);
       const inputData = { ...updateTaskEntry };
       if(name === 'name') {
+        updateState(setCharCount, operation, value.length);
         tempData = { ...inputData, [name]: value };
       } else if(name === 'completed') {
         tempData = { ...inputData, [name]: checked };
@@ -158,27 +138,27 @@ export default function FormDataLayout({ children }) {
   }
 
   return (
-    <FormContext.Provider  
+    <FormContext.Provider
       value={{
-        data, 
-        setData, 
-        isSubmittingForm, 
+        data,
+        setData,
+        isSubmittingForm,
         setIsSubmittingForm,
         submitForm,
         inputHandler,
-        activeID, 
+        activeID,
         setActiveID,
-        createTaskEntry, 
+        createTaskEntry,
         setCreateTaskEntry,
-        updateTaskEntry, 
+        updateTaskEntry,
         setUpdateTaskEntry,
-        statusMessage, 
+        statusMessage,
         setStatusMessage,
-        charCount, 
+        charCount,
         setCharCount,
-        validationData, 
+        validationData,
         setValidationData,
-        isDisabled, 
+        isDisabled,
         setIsDisabled
       }}
     >
