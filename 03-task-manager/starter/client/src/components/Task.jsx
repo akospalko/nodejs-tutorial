@@ -8,7 +8,6 @@ import { deleteTask } from '../helper/axiosRequests';
 import { useFormDataContext } from '../contexts/FormDataContext';
 import updateState from '../helper/updateState';
 
-
 export default function Task( {task, taskID} ) {
   const { setIsSubmittingForm, activeID, setActiveID, setStatusMessage } = useFormDataContext();
   const [isModalDisplayed, setIsModalDisplayed] = useState(false); 

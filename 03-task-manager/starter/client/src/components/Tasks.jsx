@@ -4,7 +4,7 @@ import Task from './Task';
 import './Tasks.css';
 import { useFormDataContext } from '../contexts/FormDataContext';
 import updateState from '../helper/updateState';
-
+  
 export default function Tasks() {
   const { 
     isSubmittingForm, 
@@ -15,11 +15,10 @@ export default function Tasks() {
 
   //fetch data memoized fn
   let fetchAllData = useCallback(async () => {
-      const response = await getAllTasks();
-      const {data, resStatusMessage } = response;
-      if(response.data.length < 1) return // empty task arr
-        setData(data);
-        updateState(setStatusMessage, 'getAllTasks', resStatusMessage);
+    const response = await getAllTasks();
+    const {data:taskData, resStatusMessage } = response;
+    setData(taskData);
+      updateState(setStatusMessage, 'getAllTasks', resStatusMessage);
   }, [setData, setStatusMessage])
 
   //fetch data on first run
@@ -31,7 +30,7 @@ export default function Tasks() {
   useEffect(() => {
     if(!isSubmittingForm) return;
     fetchAllData();
-  }, [fetchAllData, isSubmittingForm])
+  }, [data, fetchAllData, isSubmittingForm])
 
   return (
     <div className='TasksContainer'> 

@@ -29,7 +29,7 @@ export const getDbValidation = async () => {
 
 export const getAllTasks = async () => {
   let customResponseObj = {};
-  const res = await axios.get('/api/v1/tasks')
+  const res = await axios.get('/api/v1/tasks');
   try {
     if(String(res.status)[0] === '2') {
       customResponseObj = { data: res.data.tasks, resStatusMessage: GET_ALL_TASKS_SUCCESS };

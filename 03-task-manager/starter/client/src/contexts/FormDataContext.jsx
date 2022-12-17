@@ -52,7 +52,7 @@ export default function FormDataLayout({ children }) {
   }, [activeID, data])
 
   //form validation
-  const formValidation = (operation, value ) => {
+  const formValidation = (operation, value) => {
     if(operation === 'create') {
       if(value.length > validationData.name.maxlength[0]) {
         updateState(setStatusMessage, operation, validationData.name.maxlength[1]);
