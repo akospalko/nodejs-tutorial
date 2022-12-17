@@ -7,11 +7,16 @@
   margin: 25px;
 }
 
-.Tasks {
-  display:flex;
+.Tasks, .TaskListEmpty {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
+}
+
+.TaskListEmpty p {
+  color: white;
+  font-size: clamp(1.2rem, 1.5rem, 1.8rem);
 }

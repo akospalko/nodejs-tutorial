@@ -7,11 +7,14 @@ import {
   CREATE_TASK_FAILED,
   UPDATE_TASK_FAILED,
   DELETE_TASK_FAILED,
+  GET_TASK_SUCCESS,
+  GET_TASK_FAILED,
   GET_ALL_TASKS_SUCCESS,
-  GET_ALL_TASKS_FAIL,
+  GET_ALL_TASKS_FAILED,
   GET_VALIDATION_SUCCESS,
   GET_VALIDATION_FAILED,
 } from './statusMessages';
+
 
 //GET db validation data (mongo db -> mongoose schema -> task validation data)
 export const getDbValidation = async () => {
@@ -35,13 +38,24 @@ export const getAllTasks = async () => {
       customResponseObj = { data: res.data.tasks, resStatusMessage: GET_ALL_TASKS_SUCCESS };
     } 
   } catch (error) {
-    customResponseObj = { data: res.data.tasks, resStatusMessage: GET_ALL_TASKS_FAIL };
+    customResponseObj = { data: res.data.tasks, resStatusMessage: GET_ALL_TASKS_FAILED };
   }
   return customResponseObj;
 }
 
-//TODO
-export const getSingleTask = async (activeID) => {};
+export const getTask = async (activeID) => {
+  let customResponseObj = {};
+  if(!activeID) return;
+  try { 
+    const res = await axios.patch(`/api/v1/tasks/${activeID}`)
+    if(String(res.status)[0] === '2') {
+      customResponseObj = { data: res.data.task, resStatus: GET_TASK_SUCCESS }
+    } 
+  } catch (error) {
+    customResponseObj = {data: {}, resStatus: GET_TASK_FAILED}; 
+  }
+  return customResponseObj;
+}
 
 export const postTask = async (activeID, taskEntry) => {
   if(!activeID && !taskEntry) return;

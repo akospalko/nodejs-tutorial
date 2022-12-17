@@ -2,8 +2,10 @@ import React, { useEffect, useCallback } from 'react'
 import { getAllTasks } from '../helper/axiosRequests';
 import Task from './Task';
 import './Tasks.css';
+import { TASKS_LIST_EMPTY } from '../helper/statusMessages';
 import { useFormDataContext } from '../contexts/FormDataContext';
 import updateState from '../helper/updateState';
+import Loader from './Loader';
   
 export default function Tasks() {
   const { 
@@ -32,18 +34,34 @@ export default function Tasks() {
     fetchAllData();
   }, [data, fetchAllData, isSubmittingForm])
 
+  //conditinal display:
+  let renderedContent =
+  <> 
+    {data && data.map(task => (
+      <div 
+        className='Tasks'
+        key={task._id}
+      >
+        <Task 
+          task={task}
+          taskID={task._id}
+        />
+      </div>
+    ))}
+  </>
+  
+  if (!data) {
+    renderedContent = <Loader background={true}/>
+  } else if (data.length === 0) {
+    renderedContent = 
+    <div className='TaskListEmpty'> 
+      <p> { TASKS_LIST_EMPTY } </p>
+    </div>
+  }
+
   return (
     <div className='TasksContainer'> 
-      {data && data.map(task => (
-        <div 
-          className='Tasks'
-          key={task._id}>
-          <Task 
-            task={task}
-            taskID={task._id}
-        />
-        </div>
-      ))}
+      {renderedContent}
     </div>
   )
 }

@@ -6,17 +6,18 @@ import FormDataContext from './contexts/FormDataContext';
 function App() {
   return (
     <div className="App">
-      <div className='BackgroundOverlay'>
-        <div className="Header">
-          <h1> Task manager </h1>
-        </div>
-        <FormDataContext>
+      <FormDataContext>
+        {/* <Loader/> */}
+        <div className='BackgroundOverlay'>
+          <div className="Header">
+            <h1> Task manager </h1>
+          </div>
           <div className="CreateTask">
             <CreateTask/>
           </div>
           <Tasks/>
-        </FormDataContext>
-      </div>
+        </div>
+      </FormDataContext>
     </div>
   )
 }

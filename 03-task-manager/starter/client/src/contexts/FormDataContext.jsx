@@ -20,7 +20,8 @@ export default function FormDataLayout({ children }) {
     update: UPDATE_TASK_DEFAULT, 
     delete: EMPTY,
     getDbValidation: EMPTY,
-    getAllTasks: EMPTY });
+    getAllTasks: EMPTY,
+    getSingleTask: EMPTY });
   const [charCount, setCharCount] = useState({create: 0, update: 0});
   const [isDisabled, setIsDisabled] = useState({create: true, update: true});
   //create task
@@ -40,16 +41,6 @@ export default function FormDataLayout({ children }) {
     }
   }, [])
 
-  //filter out current active entry using activeID -> edit task populate input field
-  useEffect(() => {
-    if(!activeID) return;
-    if(!data) return;
-    const filteredEntry = data.filter(task => task._id === activeID);
-    if(filteredEntry) {
-      setUpdateTaskEntry(filteredEntry[0]);
-      updateState(setCharCount, 'update', filteredEntry[0]?.name?.length )
-    }
-  }, [activeID, data])
 
   //form validation
   const formValidation = (operation, value) => {
