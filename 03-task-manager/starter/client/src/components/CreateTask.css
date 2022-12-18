@@ -5,7 +5,7 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  border: 4px solid rgba(184, 60, 151, 0.5);
+  border: var(--border_color3_2px);
   padding: 10px;
 }
 
@@ -28,53 +28,51 @@
   font-size: 1rem;
   border-radius: 0;
   outline: none;
-  border: 1px solid #f5d5e0;
-  background-color: #f5d5e0;
-  color: black;
+  border: var(--border_color5);
+  background-color: var(--color5);
+  color: var(--color1);
 }
 
 .SubmitTask input:focus {
-  box-shadow: 0px 0px 25px 0.5px rgba(245, 213, 224, 0.20);
+  box-shadow: var(--input_focus_box_shadow);
 } 
 
 .SubmitTask input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: rgb(60, 55, 55);
+  color: var(--font_color_placeholder);
   opacity: 1; /* Firefox */
 }
 
 .SubmitTask input:-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: rgb(60, 55, 55);
+  color: var(--font_color_placeholder);
 }
 
 .SubmitTask input::-ms-input-placeholder { /* Microsoft Edge */
-  color: rgb(60, 55, 55);
+  color: var(--font_color_placeholder);
 }
 
 .SubmitTask button {
   width: 100px;
   height: 50px;
-  background-color: #210535;
-  border: 1px solid #210535;
+  background-color: var(--color2);
+  border: var( --border_color5);
   border-left: 0;
   font-size: 1.2rem;
   font-weight: 500;
-  color: #f5d5e0;
+  color: var(--color5);
   cursor: pointer;
   transition: border-color 0.25s;
-  /* background-image: url(./assets/svg_background_1.svg);
-  background-position: 100% 100%;
-  background-size:contain; */
 }
 
 .SubmitTask button:hover {
-  border: 1px solid #f5d5e0;
+  border: var( --border_color2);
   border-left: 0;
   border-collapse: collapse;
 }
 
 .SubmitTask button:disabled {
-  background-color: grey;
-  border: 1px solid grey;
+  background-color: var(--disabled_color);
+  border: var(--border_disabled-color);
+  color: var(--font_color_dark);
 }
 
 /* duplicate with the same found in EditTask */
@@ -90,7 +88,7 @@
 
 .StatusMessage p {
   font-size: clamp(1.1rem, 1.2rem, 1.3rem);
-  color: white;
+  color: var(--font_color_light);
   margin: 0;
 }
 
@@ -104,7 +102,7 @@
 }
 
 .CharacterCount p {
-  color: #f5d5e0;
+  color: var(--color5);
   font-size: clamp(1rem,1.1rem, 1.2rem);
   margin: 0;
 }

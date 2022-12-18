@@ -44,7 +44,9 @@ export default function EditTask({ taskID, toggleModalHandler }) {
     <form>
       <label className='InputGroup'>
         <span className='Label'> ID </span>
-        <div className='ID'> { taskID } </div>
+        <div className='ID'> 
+          <p> { taskID } </p>
+        </div>
       </label >
       <label className='InputGroup'>
         <span className='Label'> Name </span>

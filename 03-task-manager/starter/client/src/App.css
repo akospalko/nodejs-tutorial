@@ -3,7 +3,7 @@
   align-items: center;
   flex-direction: column;
   height: 100%;
-  background-color: #210535;
+  background-color: var(--color1);
   background-image: url(./assets/svg_background_1.svg);
   background-position: 50% 50%;
   background-size: cover;
@@ -18,9 +18,10 @@
   overflow: auto;
   width: 800px;
   height: 100%;
-  background-color: #210535;
-  border-left: 4px solid #7b337d;
-  border-right: 4px solid #7b337d;
+  background-color: var(--color1);
+  border: var(--border_color3_2px);
+  border-top: 0;
+  border-bottom: 0;
   scrollbar-gutter: stable both-edges; /* prevents layout shift when scrollbar dis/appearing */
 }
 
@@ -35,12 +36,11 @@
 
 .Header h1 {
   margin: 0;
-  color: #f5d5e0;
+  color: var(--color5);
 }
 
 .CreateTask {
   display: flex;
-  /* align-items: center; */
   flex-direction: column;
   width: 80%;
   height: 200px;

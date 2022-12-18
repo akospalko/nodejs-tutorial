@@ -27,15 +27,28 @@ export default function Task( {task, taskID} ) {
     setIsSubmittingForm(false);
   }
 
+  //conditional styling
+  // apply different colors to Task background based on task.completed state  
+  let taskStyle = 'Task';
+
+  //
+  if(task.completed) {
+    taskStyle = [ 'Task', 'Completed' ].join(' ');
+  }
+
+
   return (
     <>
       <div className='TaskEntry'> 
-        <div 
-          className='Task' 
-          style={ task.completed ? { backgroundColor: '#7c0fea' } : null }  
-        > 
-          <p style={task.completed ? {textDecoration: 'line-through'} : null}> { task.name } </p> 
+        <div className={ taskStyle } > 
+          <p> { task.name } </p> 
         </div>
+        {/* <div 
+          className={ taskStyle } 
+          style={ task.completed ? { backgroundColor: 'var(--color1)' } : null }  
+        > 
+          <p style={ task.completed ? {textDecoration: 'line-through'} : null}> { task.name } </p> 
+        </div> */}
         <div className='TaskControl'> 
           {/* edit / delete buttons */}
           <div 
