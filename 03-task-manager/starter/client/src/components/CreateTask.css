@@ -7,7 +7,13 @@
   height: 100%;
   border: var(--border_color3_2px);
   padding: 10px;
+  position: absolute;
+  top: 0;
+  bottom:0;
+  left: 0;
+  right:0;
 }
+
 
 .SubmitTask form {
   display: flex;

@@ -41,7 +41,6 @@ export default function FormDataLayout({ children }) {
     }
   }, [])
 
-
   //form validation
   const formValidation = (operation, value) => {
     if(operation === 'create') {
@@ -71,18 +70,21 @@ export default function FormDataLayout({ children }) {
   }
 
   //form handlers
-  const submitForm = async (e, operation, toggleModal) => {
+  const submitForm = async (e, operation, toggleModal=null, toggleLoader) => {
     e.preventDefault();
     setIsSubmittingForm(true);
     updateState(setIsDisabled, operation, true); // disable button on submit
     //axios requests
     if(operation === 'create') {
+      updateState(toggleLoader, operation, true);
       const resStatusMessage = await postTask(activeID, createTaskEntry);
       updateState(setStatusMessage, operation, resStatusMessage);
       setCreateTaskEntry(formData);
       updateState(setCharCount, operation, 0);
       setTimeout(() => updateState(setStatusMessage, operation, CREATE_TASK_DEFAULT), 1000);
+      updateState(toggleLoader, operation, false);
     } else if(operation === 'update') {
+      updateState(toggleLoader, operation, true);
       const resStatusMessage = await patchTask(activeID, updateTaskEntry)
       updateState(setStatusMessage, operation, resStatusMessage);
       setUpdateTaskEntry(formData);
@@ -93,6 +95,7 @@ export default function FormDataLayout({ children }) {
           toggleModal(); // close modal after form is submitted
         }
       }, 750);
+      updateState(toggleLoader, operation, false);
     }
     setIsSubmittingForm(false);
   }

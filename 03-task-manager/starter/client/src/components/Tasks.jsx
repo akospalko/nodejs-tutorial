@@ -4,9 +4,9 @@ import Task from './Task';
 import './Tasks.css';
 import { TASKS_LIST_EMPTY } from '../helper/statusMessages';
 import { useFormDataContext } from '../contexts/FormDataContext';
+import { useLoaderContext } from '../contexts/LoaderContext';
 import updateState from '../helper/updateState';
 import Loader from './Loader';
-  
 export default function Tasks() {
   const { 
     isSubmittingForm, 
@@ -14,25 +14,27 @@ export default function Tasks() {
     setData,
     setStatusMessage
   } = useFormDataContext();
-
+  const { isLoading, setIsLoading } = useLoaderContext();
   //fetch data memoized fn
-  let fetchAllData = useCallback(async () => {
+  let fetchAllData = useCallback(async (toggleLoader) => {
+    updateState(toggleLoader, 'getAllTasks', true); 
     const response = await getAllTasks();
     const {data:taskData, resStatusMessage } = response;
     setData(taskData);
-      updateState(setStatusMessage, 'getAllTasks', resStatusMessage);
+    updateState(setStatusMessage, 'getAllTasks', resStatusMessage);
+    updateState(toggleLoader, 'getAllTasks', false); 
   }, [setData, setStatusMessage])
 
   //fetch data on first run
   useEffect(() => {
-    fetchAllData();
-  }, [fetchAllData])
+    fetchAllData(setIsLoading);
+  }, [fetchAllData, setIsLoading])
 
   //refetch data each time form is submitted
   useEffect(() => {
     if(!isSubmittingForm) return;
-    fetchAllData();
-  }, [data, fetchAllData, isSubmittingForm])
+    fetchAllData(setIsLoading);
+  }, [data, fetchAllData, isSubmittingForm, setIsLoading])
 
   //conditinal display:
   // data -> display task list
@@ -51,9 +53,9 @@ export default function Tasks() {
       )) }
     </div>
   
-  if (!data) {
-    renderedContent = <Loader background={true}/>
-  // no data -> display empty list
+  if (isLoading.getAllTasks && !data) {
+    renderedContent = <Loader/>
+    // no data -> display empty list
   } else if (data.length === 0) {
     renderedContent = 
     <div className='TaskListEmpty'> 

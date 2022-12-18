@@ -2,12 +2,14 @@ import React, { useEffect, useCallback } from 'react';
 import './EditTask.css';
 import ReturnButton from '../assets/svg_return_1.svg';
 import { useFormDataContext } from '../contexts/FormDataContext';
+import { useLoaderContext } from '../contexts/LoaderContext';
 import { TASK_PLACEHOLDER } from '../helper/statusMessages';
 import { getTask } from '../helper/axiosRequests';
 import updateState from '../helper/updateState';
 import Loader from './Loader';
 
 export default function EditTask({ taskID, toggleModalHandler }) {
+  const operation = 'update';
   const {
     updateTaskEntry,
     setUpdateTaskEntry,
@@ -16,17 +18,19 @@ export default function EditTask({ taskID, toggleModalHandler }) {
     isSubmittingForm,
     setActiveID,
     charCount,
+    setCharCount,
     validationData,
     statusMessage,
     isDisabled,
     setStatusMessage } = useFormDataContext();
+    const { isLoading, setIsLoading } = useLoaderContext();
 
   // fetch single task from api endpoint
   const getSingleTask = useCallback(async (taskID) => {
     const response = await getTask(taskID);
     const { data, resStatusMessage } = response;
     setUpdateTaskEntry(data);
-    updateState(setStatusMessage, getSingleTask, resStatusMessage)
+    updateState(setStatusMessage, 'getSingleTask', resStatusMessage)
   }, [setStatusMessage, setUpdateTaskEntry])
 
   //set active id && get single task using id on first mount 
@@ -35,52 +39,18 @@ export default function EditTask({ taskID, toggleModalHandler }) {
       setActiveID(taskID);
   }, [getSingleTask, setActiveID, taskID])
 
-
-
-  //conditional rendering
-  let renderedContent =  
-  // default: render form 
-  <div className='EditTaskForm'>
-    <form>
-      <label className='InputGroup'>
-        <span className='Label'> ID </span>
-        <div className='ID'> 
-          <p> { taskID } </p>
-        </div>
-      </label >
-      <label className='InputGroup'>
-        <span className='Label'> Name </span>
-        <input
-          className='InputText'
-          onChange={(e) => inputHandler(e, 'update')}
-          type="text"
-          value={ updateTaskEntry.name || '' }
-          name={'name'}
-          placeholder={ TASK_PLACEHOLDER }
-          maxLength={validationData?.name?.maxlength}
-        />
-      </label>
-      <div className="CharacterCountEdit">
-        <p> {`(${ charCount.update } / ${ validationData?.name?.maxlength[0] || 0 })`} </p>
-      </div>
-      <label className='InputGroup Checkbox'>
-        <span className='Label'> Completed  </span>
-        <input
-          className='InputCheckbox'
-          onChange={(e) => inputHandler(e, 'update')}
-          type="checkbox"
-          name={"completed"}
-          checked={updateTaskEntry.completed}
-        />
-      </label>
-    </form>
-  </div>
-
-  if(isSubmittingForm) {
-    renderedContent = 
-    <>
+  //update character count
+  useEffect(() => {
+    if(!updateTaskEntry || updateTaskEntry === {}) return;
+    updateState(setCharCount, operation, updateTaskEntry.name.length)
+  }, [setCharCount, updateTaskEntry])
+  
+  let loader; 
+  if(isLoading.update) {
+    loader =   
+    <div className='EditTaskForm'>
       <Loader/>
-    </>
+    </div>
   }
 
   return (
@@ -91,20 +61,59 @@ export default function EditTask({ taskID, toggleModalHandler }) {
             className='ReturnButton'
             onClick={toggleModalHandler}
           >
-            { <img src={ ReturnButton } alt='return button' /> || '<'}
+            { <img src={ ReturnButton } alt='return button' /> || '<' }
           </div>
           <h2> Edit task </h2>
-          <div className='Dummy'>  </div>
+          <div className='Dummy'></div>
         </div>
-        {/* form  */}
-        { renderedContent }
+        { /* loader */ }
+        <div className='LoaderAndFormGroup'>
+          { loader }
+          {/* form  */ }
+          <div className='EditTaskForm'>
+            <form>
+              <label className='InputGroup'>
+                <span className='Label'> ID </span>
+                <div className='ID'> 
+                  <p> { taskID } </p>
+                </div>
+              </label >
+              <label className='InputGroup'>
+                <span className='Label'> Name </span>
+                <input
+                  className='InputText'
+                  onChange={ (e) => inputHandler(e, operation) }
+                  type="text"
+                  value={ updateTaskEntry.name || '' }
+                  name={ 'name' }
+                  placeholder={ TASK_PLACEHOLDER }
+                  maxLength={ validationData?.name?.maxlength }
+                  disabled={ isSubmittingForm }
+                />
+              </label>
+              <div className="CharacterCountEdit">
+                <p> { `(${ charCount.update } / ${ validationData?.name?.maxlength[0] || 0 })` } </p>
+              </div>
+              <label className='InputGroup Checkbox'>
+                <span className='Label'> Completed  </span>
+                <input
+                  className='InputCheckbox'
+                  onChange={ (e) => inputHandler(e, operation) }
+                  type="checkbox"
+                  name={ "completed" }
+                  checked={updateTaskEntry.completed}
+                />
+              </label>
+            </form>
+          </div>
+        </div> 
         <div className="StatusMessage">
           <p> { statusMessage.update } </p>
         </div>
         <div className='Button'>
           <button
             disabled={ isDisabled.update }
-            onClick={(e) => submitForm(e, 'update', toggleModalHandler)}
+            onClick={(e) => submitForm(e, operation, toggleModalHandler, setIsLoading)}
           > Edit
           </button>
         </div>

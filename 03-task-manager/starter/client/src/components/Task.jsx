@@ -6,10 +6,13 @@ import Bin from './../assets/svg_bin_1.svg';
 import EditTask from './EditTask';
 import { deleteTask } from '../helper/axiosRequests';
 import { useFormDataContext } from '../contexts/FormDataContext';
+import { useLoaderContext } from '../contexts/LoaderContext';
 import updateState from '../helper/updateState';
 
 export default function Task( {task, taskID} ) {
   const { setIsSubmittingForm, activeID, setActiveID, setStatusMessage } = useFormDataContext();
+  const { setIsLoading } = useLoaderContext();
+  
   const [isModalDisplayed, setIsModalDisplayed] = useState(false); 
 
   //hanlders
@@ -19,23 +22,22 @@ export default function Task( {task, taskID} ) {
       setActiveID('');
     }
   }
-  const deleteTaskEntryHandler = async (id) => {
+  const deleteTaskEntryHandler = async (id, toggleLoader) => {
     if(!id) return; 
-    setIsSubmittingForm(true);
+    setIsSubmittingForm(true); // submit form: on
+    updateState(toggleLoader, 'delete' , true);  // loader: on
     const resStatusMessage = await deleteTask(id); 
-    updateState(setStatusMessage, 'delete' , resStatusMessage);  
+    updateState(setStatusMessage, 'delete' , resStatusMessage); // submit form: off 
+    updateState(toggleLoader, 'delete' , false); // loader: off
     setIsSubmittingForm(false);
   }
 
   //conditional styling
-  // apply different colors to Task background based on task.completed state  
+  //apply different style to thecompleted task entry   
   let taskStyle = 'Task';
-
-  //
   if(task.completed) {
     taskStyle = [ 'Task', 'Completed' ].join(' ');
   }
-
 
   return (
     <>
@@ -43,12 +45,6 @@ export default function Task( {task, taskID} ) {
         <div className={ taskStyle } > 
           <p> { task.name } </p> 
         </div>
-        {/* <div 
-          className={ taskStyle } 
-          style={ task.completed ? { backgroundColor: 'var(--color1)' } : null }  
-        > 
-          <p style={ task.completed ? {textDecoration: 'line-through'} : null}> { task.name } </p> 
-        </div> */}
         <div className='TaskControl'> 
           {/* edit / delete buttons */}
           <div 
@@ -58,7 +54,7 @@ export default function Task( {task, taskID} ) {
             <img src={ Edit } alt='edit button'/>
           </div>
           <div
-            onClick={ async () => deleteTaskEntryHandler(task._id) } 
+            onClick={ async () => deleteTaskEntryHandler(task._id, setIsLoading) } 
             className='ControlElem'
           > 
             <img src={ Bin } alt='delete button'/>

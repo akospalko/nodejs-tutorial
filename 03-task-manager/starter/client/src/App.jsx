@@ -1,22 +1,25 @@
 import CreateTask from './components/CreateTask';
 import Tasks from './components/Tasks';
 import './App.css'
-import FormDataContext from './contexts/FormDataContext';
+import FormDataLayout from './contexts/FormDataContext';
+import LoaderLayout from './contexts/LoaderContext';
 
 function App() {
   return (
     <div className="App">
-      <FormDataContext>
-        <div className='BackgroundOverlay'>
-          <div className="Header">
-            <h1> Task manager </h1>
+      <LoaderLayout>
+        <FormDataLayout>
+          <div className='BackgroundOverlay'>
+            <div className="Header">
+              <h1> Task manager </h1>
+            </div>
+            <div className="CreateTask">
+              <CreateTask/>
+            </div>
+            <Tasks/>
           </div>
-          <div className="CreateTask">
-            <CreateTask/>
-          </div>
-          <Tasks/>
-        </div>
-      </FormDataContext>
+        </FormDataLayout>
+      </LoaderLayout>
     </div>
   )
 }
