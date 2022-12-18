@@ -8,19 +8,18 @@ import updateState from '../helper/updateState';
 import Loader from './Loader';
 
 export default function EditTask({ taskID, toggleModalHandler }) {
-const {
-  updateTaskEntry,
-  inputHandler,
-  submitForm,
-  isSubmittingForm,
-  setActiveID,
-  charCount,
-  validationData,
-  statusMessage,
-  isDisabled,
-  setUpdateTaskEntry,
-  setStatusMessage
-} = useFormDataContext();
+  const {
+    updateTaskEntry,
+    setUpdateTaskEntry,
+    inputHandler,
+    submitForm,
+    isSubmittingForm,
+    setActiveID,
+    charCount,
+    validationData,
+    statusMessage,
+    isDisabled,
+    setStatusMessage } = useFormDataContext();
 
   // fetch single task from api endpoint
   const getSingleTask = useCallback(async (taskID) => {
@@ -36,45 +35,51 @@ const {
       setActiveID(taskID);
   }, [getSingleTask, setActiveID, taskID])
 
+
+
   //conditional rendering
   let renderedContent =  
   // default: render form 
-  <form>
-    <label className='InputGroup'>
-      <span className='Label'> ID </span>
-      <div className='ID'> { taskID } </div>
-    </label >
-    <label className='InputGroup'>
-      <span className='Label'> Name </span>
-      <input
-        className='InputText'
-        onChange={(e) => inputHandler(e, 'update')}
-        type="text"
-        value={ updateTaskEntry.name || '' }
-        name={'name'}
-        placeholder={ TASK_PLACEHOLDER }
-        maxLength={validationData?.name?.maxlength}
-      />
-    </label>
-    <div className="CharacterCountEdit">
-      <p> {`(${ charCount.update } / ${ validationData?.name?.maxlength[0] || 0 })`} </p>
-    </div>
-    <label className='InputGroup Checkbox'>
-      <span className='Label'> Completed  </span>
-      <input
-        className='InputCheckbox'
-        onChange={(e) => inputHandler(e, 'update')}
-        type="checkbox"
-        name={"completed"}
-        checked={updateTaskEntry.completed}
-      />
-    </label>
-  </form>
+  <div className='EditTaskForm'>
+    <form>
+      <label className='InputGroup'>
+        <span className='Label'> ID </span>
+        <div className='ID'> { taskID } </div>
+      </label >
+      <label className='InputGroup'>
+        <span className='Label'> Name </span>
+        <input
+          className='InputText'
+          onChange={(e) => inputHandler(e, 'update')}
+          type="text"
+          value={ updateTaskEntry.name || '' }
+          name={'name'}
+          placeholder={ TASK_PLACEHOLDER }
+          maxLength={validationData?.name?.maxlength}
+        />
+      </label>
+      <div className="CharacterCountEdit">
+        <p> {`(${ charCount.update } / ${ validationData?.name?.maxlength[0] || 0 })`} </p>
+      </div>
+      <label className='InputGroup Checkbox'>
+        <span className='Label'> Completed  </span>
+        <input
+          className='InputCheckbox'
+          onChange={(e) => inputHandler(e, 'update')}
+          type="checkbox"
+          name={"completed"}
+          checked={updateTaskEntry.completed}
+        />
+      </label>
+    </form>
+  </div>
+
   if(isSubmittingForm) {
-    //show loader
-    renderedContent = <Loader /> 
+    renderedContent = 
+    <>
+      <Loader/>
+    </>
   }
-  
 
   return (
     <div className='Background'>
@@ -90,11 +95,9 @@ const {
           <div className='Dummy'>  </div>
         </div>
         {/* form  */}
-        <div className='EditTaskForm'>
-          { renderedContent }
-          <div className="StatusMessage">
-            <p> { statusMessage.update } </p>
-          </div>
+        { renderedContent }
+        <div className="StatusMessage">
+          <p> { statusMessage.update } </p>
         </div>
         <div className='Button'>
           <button

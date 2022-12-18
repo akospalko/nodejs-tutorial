@@ -35,23 +35,25 @@ export default function Tasks() {
   }, [data, fetchAllData, isSubmittingForm])
 
   //conditinal display:
+  // data -> display task list
   let renderedContent =
-  <> 
-    {data && data.map(task => (
-      <div 
-        className='Tasks'
-        key={task._id}
-      >
-        <Task 
-          task={task}
-          taskID={task._id}
-        />
-      </div>
-    ))}
-  </>
+    <div className='TasksContainer'> 
+      { data && data.map(task => (
+        <div 
+          className='Tasks'
+          key={task._id}
+        >
+          <Task 
+            task={task}
+            taskID={task._id}
+          />
+        </div>
+      )) }
+    </div>
   
   if (!data) {
     renderedContent = <Loader background={true}/>
+  // no data -> display empty list
   } else if (data.length === 0) {
     renderedContent = 
     <div className='TaskListEmpty'> 
@@ -60,8 +62,8 @@ export default function Tasks() {
   }
 
   return (
-    <div className='TasksContainer'> 
-      {renderedContent}
-    </div>
+    <> 
+      { renderedContent }
+    </>
   )
 }

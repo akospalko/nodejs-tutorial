@@ -82,7 +82,6 @@ export default function FormDataLayout({ children }) {
       setCreateTaskEntry(formData);
       updateState(setCharCount, operation, 0);
       setTimeout(() => updateState(setStatusMessage, operation, CREATE_TASK_DEFAULT), 1000);
-      setIsSubmittingForm(false);
     } else if(operation === 'update') {
       const resStatusMessage = await patchTask(activeID, updateTaskEntry)
       updateState(setStatusMessage, operation, resStatusMessage);
@@ -93,9 +92,9 @@ export default function FormDataLayout({ children }) {
         if(toggleModal) {
           toggleModal(); // close modal after form is submitted
         }
-      } , 500);
-      setIsSubmittingForm(false);
+      }, 750);
     }
+    setIsSubmittingForm(false);
   }
 
   // input handler for create - update task

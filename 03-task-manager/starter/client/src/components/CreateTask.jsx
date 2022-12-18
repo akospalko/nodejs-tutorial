@@ -2,6 +2,7 @@ import React from 'react'
 import './CreateTask.css'
 import { useFormDataContext } from '../contexts/FormDataContext';
 import { TASK_PLACEHOLDER } from '../helper/statusMessages';
+import Loader from './Loader';
 export default function CreateTask() {
   const operation = 'create';
   const { 
@@ -10,11 +11,13 @@ export default function CreateTask() {
     createTaskEntry, 
     inputHandler, 
     submitForm, 
+    isSubmittingForm,
     statusMessage,
     isDisabled, 
   } = useFormDataContext();
 
-  return (
+  //conditional rendering
+  let renderedContent = 
     <div className="SubmitTask"> 
       <form>
         <input
@@ -38,5 +41,17 @@ export default function CreateTask() {
         <p> {`(${ charCount.create } / ${ validationData?.name?.maxlength[0] || 0 })`} </p>
       </div>
     </div>
+
+  if(isSubmittingForm) {
+    renderedContent = 
+    <div className="SubmitTask"> 
+      <Loader/> 
+    </div> 
+  }
+  
+  return (
+    <>
+      { renderedContent }
+    </>
   )
 }
