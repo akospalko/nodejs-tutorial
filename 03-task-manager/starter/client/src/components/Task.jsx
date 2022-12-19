@@ -12,7 +12,6 @@ import updateState from '../helper/updateState';
 export default function Task( {task, taskID} ) {
   const { setIsSubmittingForm, activeID, setActiveID, setStatusMessage } = useFormDataContext();
   const { setIsLoading } = useLoaderContext();
-  
   const [isModalDisplayed, setIsModalDisplayed] = useState(false); 
 
   //hanlders

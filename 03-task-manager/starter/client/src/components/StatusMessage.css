@@ -1,0 +1,50 @@
+.Message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  flex-shrink: 0;
+}
+
+.MessageEdit {
+  height: 75px;
+  width: 100%;
+}
+
+.Message p {
+  font-size: clamp(1.1rem, 1.2rem, 1.3rem);
+  color: var(--font_color_light);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .Message {
+    height: 100px;
+    width: 85%;
+  }
+  
+  .MessageEdit {
+    height: 75px;
+  }
+  
+  .Message p {
+
+  }
+}
+
+/* PC */
+@media (min-width: 1366px) {
+  .Message {
+    width: 100%;
+  }
+  
+  .MessageEdit {
+    width: 80%;
+  }
+  
+  .Message p {
+
+  }
+}
+

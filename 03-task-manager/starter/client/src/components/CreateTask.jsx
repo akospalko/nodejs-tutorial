@@ -4,6 +4,8 @@ import { useFormDataContext } from '../contexts/FormDataContext';
 import { useLoaderContext } from '../contexts/LoaderContext';
 import { TASK_PLACEHOLDER } from '../helper/statusMessages';
 import Loader from './Loader';
+import StatusMessage from './StatusMessage';
+import CharacterCount from './CharacterCount';
 export default function CreateTask() {
   const operation = 'create';
   const { 
@@ -19,7 +21,7 @@ export default function CreateTask() {
   const { isLoading, setIsLoading } = useLoaderContext();
 
   //conditional rendering
-  const renderedContent = 
+  const formContent = 
     <div className="SubmitTask"> 
       <form>
         <input
@@ -37,25 +39,27 @@ export default function CreateTask() {
         > Submit 
         </button>
       </form>  
-      <div className="StatusMessage"> 
-        <p> { statusMessage.create } </p>
-      </div>
-      <div className="CharacterCount"> 
-        <p> {`(${ charCount.create } / ${ validationData?.name?.maxlength[0] || 0 })`} </p>
-      </div>
+      <CharacterCount 
+        current={ charCount.create } 
+        max={ validationData?.name?.maxlength[0] }
+      />
+      <StatusMessage 
+        message={ statusMessage.create }
+        styling={ operation } 
+      />
     </div>
-let loader;
+  let loader;
   if(isLoading.create || isLoading.delete) {
     loader = 
     <div className="SubmitTask"> 
       <Loader/> 
     </div> 
   }
-  
+
   return (
     <>
       { loader }
-      { renderedContent }
+      { formContent }
     </>
   )
 }

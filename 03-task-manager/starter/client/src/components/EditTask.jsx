@@ -7,6 +7,8 @@ import { TASK_PLACEHOLDER } from '../helper/statusMessages';
 import { getTask } from '../helper/axiosRequests';
 import updateState from '../helper/updateState';
 import Loader from './Loader';
+import StatusMessage from './StatusMessage';
+import CharacterCount from './CharacterCount';
 
 export default function EditTask({ taskID, toggleModalHandler }) {
   const operation = 'update';
@@ -91,9 +93,9 @@ export default function EditTask({ taskID, toggleModalHandler }) {
                   disabled={ isSubmittingForm }
                 />
               </label>
-              <div className="CharacterCountEdit">
-                <p> { `(${ charCount.update } / ${ validationData?.name?.maxlength[0] || 0 })` } </p>
-              </div>
+              
+              <CharacterCount current={ charCount.update } max={ validationData?.name?.maxlength[0] } /> 
+              
               <label className='InputGroup Checkbox'>
                 <span className='Label'> Completed  </span>
                 <input
@@ -107,9 +109,10 @@ export default function EditTask({ taskID, toggleModalHandler }) {
             </form>
           </div>
         </div> 
-        <div className="StatusMessage">
-          <p> { statusMessage.update } </p>
-        </div>
+        <StatusMessage 
+        message={ statusMessage.update }
+        styling={ operation } 
+        />
         <div className='Button'>
           <button
             disabled={ isDisabled.update }
