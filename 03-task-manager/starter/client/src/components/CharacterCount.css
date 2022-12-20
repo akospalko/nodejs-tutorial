@@ -4,12 +4,11 @@
   align-items: center;
   height: 25px;
   width: 100%;
-  flex-grow: 1;
 }
 
 .CharacterCount p {
   color: var(--color5);
-  font-size: clamp(1rem, 1.1rem, 1.2rem);
+  font-size: var(--font_size_char_count_small);
   margin: 0;
 }
 
@@ -20,16 +19,12 @@
   }
   
   .CharacterCount p {
- 
+    font-size: var(--font_size_char_count_medium);
   }
 }
 
 @media (min-width: 1366px) {
-  .CharacterCount {
-    width: 100%;
-  }
-  
   .CharacterCount p {
- 
+
   }
 }

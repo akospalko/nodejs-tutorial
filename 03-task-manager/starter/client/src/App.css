@@ -37,6 +37,7 @@
 .Header h1 {
   margin: 0;
   color: var(--color5);
+  font-size: var(--font_size_header_small);
 }
 
 .CreateTask {
@@ -66,14 +67,17 @@
   .CreateTask {
     height: 250px;
   }
+
+  .Header h1 {
+    font-size: var(--font_size_header_medium);
+  }
 }
 
 /* PC */
 @media (min-width: 1366px) {
-
   .BackgroundOverlay {
     align-items: center;
-    width: 50%;
+    width: 45%;
     scrollbar-gutter: stable both-edges; 
   }
 
@@ -81,7 +85,4 @@
     height: 200px;
   }
 
-  .Header h1 {
-
-  }
 }

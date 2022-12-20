@@ -9,27 +9,29 @@
 
 .MessageEdit {
   height: 75px;
-  width: 100%;
+  width: 95%;
 }
 
 .Message p {
-  font-size: clamp(1.1rem, 1.2rem, 1.3rem);
+  font-size: var(--font_size_status_message_small);
   color: var(--font_color_light);
   margin: 0;
+  letter-spacing: 2px;
 }
 
+/* LAPTOP */
 @media (min-width: 768px) {
   .Message {
-    height: 100px;
-    width: 85%;
+    height: 75px;
   }
   
   .MessageEdit {
     height: 75px;
+    width: 85%;
   }
   
   .Message p {
-
+    font-size: var(--font_size_status_message_medium);
   }
 }
 
@@ -41,10 +43,6 @@
   
   .MessageEdit {
     width: 80%;
-  }
-  
-  .Message p {
-
   }
 }
 

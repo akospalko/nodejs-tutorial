@@ -38,6 +38,7 @@
   flex-grow: 1;
   margin: 0;
   color: var(--font_color_light);
+  font-size: var(--font_size_edit_task_title_small);
 }
 
 .ReturnButton {
@@ -112,7 +113,7 @@
   width: 100%;
   height: 50px;
   color: var(--color5);
-  font-size: 1.2rem;
+  font-size: var(--font_size_input_label_small);
   margin-bottom: 5px;
 }
 
@@ -123,12 +124,12 @@
   height: 60px;
   background-color: var(--disabled_color);
   padding: 5px;
-  font-size: 1.1rem;
 }
 
 .ID p {
   color: var(--font_color_dark);
   margin: 0;
+  font-size: var(--font_size_input_text_small)
 }
 
 .InputGroup .InputText {
@@ -138,7 +139,7 @@
   outline: none;
   border: var(--border_color5);
   padding: 5px;
-  font-size: 1.1rem;
+  font-size: var(--font_size_input_text_small)
 }
 
 .InputGroup .InputText:focus {
@@ -147,6 +148,7 @@
 
 .Checkbox .Label {
   justify-content: center;
+  font-size: var(--font_size_input_label_small);
 }
 
 .Checkbox {
@@ -167,7 +169,7 @@ input.InputCheckbox {
 .Button {
   display: flex;
   justify-content: center;
-  width: 80%;
+  width: 95%;
   height: 60px;
   margin: 0;
   margin-bottom: 25px;
@@ -195,16 +197,24 @@ input.InputCheckbox {
   color: var(--font_color_dark);
 }
 
+.Button button p {
+  font-size: var( --font_size_button_small);
+  margin: 0;
+}
 
 /* TABLET */
 @media (min-width: 768px) {
   .Modal {
     width: 85%;
-    height: 85%;
+    height: 60%;
   }
 
   .ReturnButton img {
     width: 35px;
+  }
+
+  .Title h2 {
+    font-size: var(--font_size_edit_task_title_medium);
   }
 
   .LoaderAndFormGroup {
@@ -218,6 +228,15 @@ input.InputCheckbox {
 
   .Label {
     margin-bottom: 0;
+    font-size: var(--font_size_input_label_medium);
+  }
+
+  .ID p {
+    font-size: var(--font_size_input_text_medium)
+  }
+  
+  .InputGroup .InputText {
+    font-size: var(--font_size_input_text_medium)
   }
 
   .Checkbox {
@@ -226,22 +245,30 @@ input.InputCheckbox {
     width: 100%;
   }
 
+  .Checkbox .Label {
+    justify-content: center;
+    font-size: var(--font_size_input_label_medium);
+  }
+
   .Checkbox span {
-    width: 25%;
+    width: 30%;
   }
 
   .Button {
     width: 85%;
     margin-bottom: 25px;
   }
+  
+.Button button p {
+  font-size: var(--font_size_button_medium);
+}
 }
 
 /* PC */
 @media (min-width: 1366px) {
-  
   .Modal {
     width: 650px;
-    height: 600px;
+    height: 650px;
   }
 
   .Title {
@@ -255,6 +282,10 @@ input.InputCheckbox {
 
   .ReturnButton img {
     width: 25px;
+  }
+
+  .Title h2 {
+    font-size: var(--font_size_edit_task_title_small);
   }
 
   .Dummy {
@@ -277,31 +308,22 @@ input.InputCheckbox {
   } 
 
   .Label {
-    width: 10%;
+    width: 15%;
   }
 
   .ID {
     height: 50px;
-    width: 90%;
+    width: 85%;
   }
 
   .InputGroup .InputText {
-    width: 90%;
+    width: 85%;
     height: 50px;
   }
 
   .Checkbox {
     margin: 0;
     margin-top: 15px;
-    cursor: pointer;
-  }
-
-  .Checkbox span {
-    width: 100px;
-  }
-
-  input.InputCheckbox {
-    width: 25px;
   }
 
   .Button {

@@ -36,7 +36,8 @@ export default function CreateTask() {
         <button 
           disabled={ isDisabled.create }
           onClick={ (e) => submitForm(e, operation, null, setIsLoading) }
-        > Submit 
+        > 
+          <p> Add </p>
         </button>
       </form>  
       <CharacterCount 

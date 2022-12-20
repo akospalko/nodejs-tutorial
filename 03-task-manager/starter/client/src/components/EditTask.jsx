@@ -117,7 +117,8 @@ export default function EditTask({ taskID, toggleModalHandler }) {
           <button
             disabled={ isDisabled.update }
             onClick={(e) => submitForm(e, operation, toggleModalHandler, setIsLoading)}
-          > Edit
+          > 
+            <p> Edit </p>
           </button>
         </div>
       </div>
