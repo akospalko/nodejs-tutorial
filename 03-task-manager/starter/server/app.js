@@ -10,7 +10,6 @@ const errorHandlerMiddleware = require('./middleware/error-handler.js');
 const port = process.env.PORT || 3000;
 //middleware
 app.use(express.json());  //built in middleware function in Express . It parses incoming JSON requests and puts the parsed data in req.body.
-app.use(express.static('./public'));
 app.use(errorHandlerMiddleware);
 //routes
 app.use('/api/v1/tasks', tasks);

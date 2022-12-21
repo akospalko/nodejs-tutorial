@@ -202,11 +202,59 @@ input.InputCheckbox {
   margin: 0;
 }
 
+@media (orientation: landscape) and (max-width: 767px) {
+  .Background {
+    justify-content: flex-start;
+  }
+  
+  .Modal {
+    justify-content: flex-start;
+    width: 100%;
+    overflow: auto;
+  }
+  
+  .Title {
+    height: 50px;
+  }
+  
+  .InputGroup {
+    height: 60px;
+    margin: 5px;
+  } 
+  
+  .Label {
+    height: 30px;
+  }
+  
+  .ID {
+    height: 30px;
+  }
+  
+  .InputGroup .InputText {
+    height: 30px;
+  }
+  
+  input.InputCheckbox {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+  }
+  
+  .Button {
+    display: flex;
+    justify-content: center;
+    width: 95%;
+    height: 30px;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+} 
+
 /* TABLET */
 @media (min-width: 768px) {
   .Modal {
-    width: 85%;
-    height: 60%;
+    width: 650px;
+    height: 650px;
   }
 
   .ReturnButton img {
@@ -259,75 +307,33 @@ input.InputCheckbox {
     margin-bottom: 25px;
   }
   
-.Button button p {
-  font-size: var(--font_size_button_medium);
+  .Button button p {
+    font-size: var(--font_size_button_medium);
+  }
 }
+
+@media (min-width: 768px) and (orientation: landscape) {
+  .Background {
+    align-items: flex-start;
+  }
+  .Modal {
+    width: 100%;
+    overflow: auto;
+    align-items: center;
+    justify-content: flex-start;
+  }
 }
 
 /* PC */
 @media (min-width: 1366px) {
+  .Background {
+    align-items: center;
+  }
   .Modal {
     width: 650px;
     height: 650px;
-  }
-
-  .Title {
-    height: 50px;
-  }
-
-  .ReturnButton {
-    height: 100%;
-    width: 50px;
-  }
-
-  .ReturnButton img {
-    width: 25px;
-  }
-
-  .Title h2 {
-    font-size: var(--font_size_edit_task_title_small);
-  }
-
-  .Dummy {
-    height: 100%;
-    width: 50px;
-  }
-
-  .LoaderContainer {
-    width: 80%;
-  }
-
-  .LoaderAndFormGroup {
-    width: 80%;
-  }
-
-  .InputGroup {
-    flex-direction: row;
-    height: 60px;
-    margin-bottom: 10px;
-  } 
-
-  .Label {
-    width: 15%;
-  }
-
-  .ID {
-    height: 50px;
-    width: 85%;
-  }
-
-  .InputGroup .InputText {
-    width: 85%;
-    height: 50px;
-  }
-
-  .Checkbox {
-    margin: 0;
-    margin-top: 15px;
-  }
-
-  .Button {
-    width: 80%;
-    height: 50px;
+    overflow: auto;
+    align-items: center;
+    justify-content: flex-start;
   }
 }
