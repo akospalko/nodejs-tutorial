@@ -65,8 +65,8 @@ export const postTask = async (activeID, taskEntry) => {
       return CREATE_TASK_SUCCESS; 
     } 
   } catch (error) {
-      return CREATE_TASK_FAILED;
-    }
+    return CREATE_TASK_FAILED;
+  }
 }
 
 export const patchTask = async (activeID, taskEntry) => {
